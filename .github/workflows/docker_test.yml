@@ -33,6 +33,7 @@ jobs:
 
 #       - name: Stop container
 #         run: docker stop fastapi-whisper_conteneur
+#
 
   sync-to-hub:
     runs-on: ubuntu-latest
