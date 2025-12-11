@@ -1,0 +1,48 @@
+name: Sync to Hugging Face hub
+on:
+  push:
+    branches: [main]
+
+  # to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker
+        run: |
+          docker pull fastapi-whisper:latest || true
+          docker build --cache-from fastapi-whisper:latest -t fastapi-whisper .
+
+      - name: Run container
+        run: |
+          docker run -d --name fastapi-whisper_conteneur -p 7860:7860 fastapi-whisper
+          sleep 60
+
+      - name: Test endpoint
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:7860/docs)
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "API test failed!"
+            docker logs fastapi-whisper_conteneur
+            exit 1
+          fi
+
+      - name: Stop container
+        run: docker stop fastapi-whisper_conteneur
+
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    needs: test-api
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: git push https://jimmy573:$HF_TOKEN@huggingface.co/spaces/jimmy573/Transcription_audio main
