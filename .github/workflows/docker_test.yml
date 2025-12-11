@@ -24,6 +24,15 @@ jobs:
           docker run -d --name fastapi-whisper_conteneur -p 7860:7860 fastapi-whisper
           sleep 60
 
+      - name: Test endpoint
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:7860/docs)
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "API test failed!"
+            docker logs fastapi-whisper_conteneur
+            exit 1
+          fi
+
       - name: Test API in Python
         run: python test_api.py
 

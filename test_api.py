@@ -2,9 +2,9 @@ import time
 import requests
 import sys
 
-API_URL = "http://localhost:7860/"
+API_URL = "http://localhost:7860/docs"
 
-def wait_for_server(timeout=30):
+def wait_for_server(timeout=60):
     print("⏳ Waiting for API to start...")
     start = time.time()
     while time.time() - start < timeout:
