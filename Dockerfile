@@ -11,8 +11,8 @@ WORKDIR /app
 COPY . /app
 
 # Installer les dépendances Python
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements_env_docker.txt .
+RUN pip install --no-cache-dir -r requirements_env_docker.txt
 
 # Exposer le port
 EXPOSE 7860

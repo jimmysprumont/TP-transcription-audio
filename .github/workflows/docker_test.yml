@@ -14,8 +14,7 @@ jobs:
 
       - name: Build Docker
         run: |
-          docker pull fastapi-whisper:latest || true
-          docker build --cache-from fastapi-whisper:latest -t fastapi-whisper .
+          docker build -t fastapi-whisper .
 
       - name: Run container
         run: |
