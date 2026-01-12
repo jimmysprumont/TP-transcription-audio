@@ -58,22 +58,24 @@ jobs:
           git config user.name "jimmysprumont"
           git config user.email "sprumontjimmy@gmail.com"  
 
-      - name: Prepare clean repo for Hugging Face
+      - name: Push clean repo to Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # 1. Créer un dossier temporaire
           mkdir hf-temp
           cd hf-temp
           git init
           git remote add origin https://jimmy573:$HF_TOKEN@huggingface.co/spaces/jimmy573/Transcription_audio
 
-          # 2. Copier seulement les fichiers utiles (exclure mp4 et txt)
+          # Commit vide pour initialiser le dépôt
+          git commit --allow-empty -m "Initial commit"
+
+          # Copier les fichiers sans les binaires
           rsync -av --exclude='input.mp4' --exclude='real_speech.txt' ../ .
 
-          # 3. Commit initial
+          # Ajouter et commit les fichiers utiles
           git add .
           git commit -m "Sync to Hugging Face (no binaries)"
 
-          # 4. Push forcé vers Hugging Face
+          # Push forcé vers Hugging Face
           git push origin main --force
