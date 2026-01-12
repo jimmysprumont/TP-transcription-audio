@@ -53,29 +53,31 @@ jobs:
           fetch-depth: 0
           lfs: true
 
-      - name: Config Git identity
+      - name: Prepare temp repo excluding media binaries
         run: |
-          git config user.name "jimmysprumont"
-          git config user.email "sprumontjimmy@gmail.com"  
-
-      - name: Push clean repo to Hugging Face
+          rm -rf hf_sync
+          mkdir -p hf_sync
+          SRC_DIR=./
+          if [ -d IA_CLOUD_S ]; then SRC_DIR=IA_CLOUD_S/; fi
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github/**' --exclude='.pytest_cache/**' --exclude='.venv/**' --exclude='venv/**' \
+            --exclude='*.mp4' --exclude='*.wav' --exclude='*.avi' --exclude='*.mov' --exclude='*.mkv' --exclude='*.webm' \
+            --exclude='*.mp3' --exclude='*.flac' --exclude='*.ogg' \
+            --exclude='input_files/**' --exclude='output_files/**' \
+            "$SRC_DIR" hf_sync/
+          cd hf_sync
+          git init
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "Sync filtered snapshot (exclude media)"
+          git branch -M main
+ 
+      - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          mkdir hf-temp
-          cd hf-temp
-          git init
-          git remote add origin https://jimmy573:$HF_TOKEN@huggingface.co/spaces/jimmy573/Transcription_audio
-
-          # Commit vide pour initialiser le dépôt
-          git commit --allow-empty -m "Initial commit"
-
-          # Copier les fichiers sans les binaires
-          rsync -av --exclude='input.mp4' --exclude='real_speech.txt' ../ .
-
-          # Ajouter et commit les fichiers utiles
-          git add .
-          git commit -m "Sync to Hugging Face (no binaries)"
-
-          # Push forcé vers Hugging Face
-          git push origin main --force
+          cd hf_sync
+          git remote add origin https://jimmy573:${{ secrets.HF_TOKEN }}huggingface.co/spaces/jimmy573/Transcription_audio
+          git push -f origin main
