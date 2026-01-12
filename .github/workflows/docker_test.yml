@@ -37,10 +37,8 @@ jobs:
         run: python test_api.py
 
       - name: Test traduction
-        run: |
-          echo "🎯 Test traduction"
-          python test_traduction.py
-          echo "✅ WER OK!"
+      # Tester la traduction dans le conteneur Docker
+        run: docker exec fastapi-whisper_conteneur python3 test_traduction.py
 
       - name: Stop container
         run: docker stop fastapi-whisper_conteneur
