@@ -60,12 +60,17 @@ jobs:
 
       - name: Reset main history and remove binaries
         run: |
-              git checkout --orphan main
-              git reset --hard
-              rm -f input.mp4 real_speech.txt
-              git add .
-              git commit -m "Clean main for Hugging Face (no binaries)"
-
+          # 1. Créer une branche orpheline temporaire
+          git checkout --orphan temp_clean
+          # 2. Commit vide pour initialiser la branche
+          git commit --allow-empty -m "Initial commit"
+          # 3. Renommer la branche en main (remplace l'ancien main)
+          git branch -M main
+          # 4. Supprimer les fichiers binaires
+          rm -f input.mp4 real_speech.txt
+          # 5. Ajouter et committer le reste
+          git add .
+          git commit -m "Clean main for Hugging Face (no binaries)"
 
       - name: Push to hub
         env:
