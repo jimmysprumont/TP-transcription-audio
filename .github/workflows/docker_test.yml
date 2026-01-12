@@ -52,14 +52,15 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+
       - name: Config Git identity
         run: |
           git config user.name "jimmysprumont"
-          git config user.email "sprumontjimmy@gmail.com"          
+          git config user.email "sprumontjimmy@gmail.com"  
+
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git rm --cached input.mp4 real_speech.txt 
-          git commit -m "ignore input video and real speech text files" 
+          rm input.mp4 real_speech.txt
           git push https://jimmy573:$HF_TOKEN@huggingface.co/spaces/jimmy573/Transcription_audio main
