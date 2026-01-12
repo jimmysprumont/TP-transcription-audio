@@ -36,21 +36,11 @@ jobs:
       - name: Test API in Python
         run: python test_api.py
 
-      - name: Test traduction ASR (WER)
+      - name: Test traduction
         run: |
           echo "🎯 Test traduction"
           python test_traduction.py
           echo "✅ WER OK!"
-
-
-    #   - name: Test endpoint
-    #     run: |
-    #       RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:7860/docs)
-    #       if [ "$RESPONSE" -ne 200 ]; then
-    #         echo "API test failed!"
-    #         docker logs fastapi-whisper_conteneur
-    #         exit 1
-    #       fi
 
       - name: Stop container
         run: docker stop fastapi-whisper_conteneur
