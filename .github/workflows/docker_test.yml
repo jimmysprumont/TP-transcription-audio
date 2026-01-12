@@ -58,14 +58,14 @@ jobs:
           git config user.name "jimmysprumont"
           git config user.email "sprumontjimmy@gmail.com"  
 
-      - name: Remove binary files for HF git
+      - name: Reset main history and remove binaries
         run: |
-              - name: Reset main history and remove binaries
               git checkout --orphan main
               git reset --hard
               rm -f input.mp4 real_speech.txt
               git add .
               git commit -m "Clean main for Hugging Face (no binaries)"
+
 
       - name: Push to hub
         env:
