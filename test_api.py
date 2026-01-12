@@ -4,6 +4,7 @@ import sys
 
 API_URL = "http://localhost:7860/docs"
 
+
 def wait_for_server(timeout=60):
     print("⏳ Waiting for API to start...")
     start = time.time()
