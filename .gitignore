@@ -1,0 +1,9 @@
+# .gitignore
+input.*
+*.mp4
+*.wav
+real_speech.txt
+.DS_Store
+__pycache__/
+.env
+.pytest_cache/
