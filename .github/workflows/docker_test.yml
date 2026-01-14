@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-api:
+  test-api&traduction:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -36,11 +36,6 @@ jobs:
       - name: Test API in Python
         run: python test_api.py
 
-  test-traduction :
-    runs-on: ubuntu-latest
-    needs: test-api
-    steps:
-      - uses: actions/checkout@v3
       - name: Test traduction
       # Tester la traduction dans le conteneur Docker
         run: docker exec fastapi-whisper_conteneur python3 test_traduction.py
@@ -51,7 +46,7 @@ jobs:
 
   sync-to-hub:
     runs-on: ubuntu-latest
-    needs: test-api
+    needs: test-api&traduction
     steps:
       - uses: actions/checkout@v3
         with:
