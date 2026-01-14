@@ -79,5 +79,5 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           cd hf_sync
-          git remote add origin https://jimmy573:${{ secrets.HF_TOKEN }}huggingface.co/spaces/jimmy573/Transcription_audio
+          git remote add origin https://jimmy573:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/jimmy573/Transcription_audio
           git push -f origin main
