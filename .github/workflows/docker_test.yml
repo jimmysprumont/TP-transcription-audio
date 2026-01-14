@@ -36,7 +36,7 @@ jobs:
       - name: Test API in Python
         run: python test_api.py
 
-  sync-to-hub:
+  test-traduction :
     runs-on: ubuntu-latest
     needs: test-api
     steps:
