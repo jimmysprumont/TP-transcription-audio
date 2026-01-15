@@ -30,8 +30,8 @@ def transcrire_audio(file):
     return text, tmp_txt.name
 
 # ===== Gradio UI =====
-with gr.Blocks(title="Whisper Cloud Transcription") as demo:
-    gr.Markdown("## 🎙️ Transcription Audio / Vidéo (Cloud HF)")
+with gr.Blocks(title="Transcription audio") as demo:
+    gr.Markdown("## 🎙️ Transcription Audio / Vidéo (Cloud)")
     media_input = gr.File(label="Dépose un fichier audio ou vidéo", file_types=["audio","video"])
     btn = gr.Button("Lancer")
     output_text = gr.Textbox(label="Résultat", lines=10)
