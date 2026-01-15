@@ -2,7 +2,7 @@ import time
 import requests
 import sys
 
-API_URL = "http://localhost:7860/docs"
+API_URL = "http://localhost:7860/"
 
 
 def wait_for_server(timeout=60):

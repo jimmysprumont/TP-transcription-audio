@@ -26,7 +26,7 @@ jobs:
 
       - name: Test endpoint
         run: |
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:7860/docs)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:7860/)
           if [ "$RESPONSE" -ne 200 ]; then
             echo "API test failed!"
             docker logs fastapi-whisper_conteneur
